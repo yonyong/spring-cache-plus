@@ -1,0 +1,5 @@
+# Auto Configure
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+top.yonyong.spring.cache.plus.aspect.CachePointcut,\
+top.yonyong.spring.cache.plus.client.redis.RedisCacheTemplate,\
+top.yonyong.spring.cache.plus.client.redis.RedisCacheConfig

@@ -1,0 +1,16 @@
+{
+  "properties": [
+    {
+      "name": "system.cache.aop.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": "true",
+      "description": "Cache Plus Switch(default true)"
+    },
+    {
+      "name": "system.cache.client.redis.enable",
+      "type": "java.lang.Boolean",
+      "defaultValue": "true",
+      "description": "Cache Plus Client Redis Switch(default true)"
+    }
+  ]
+}
