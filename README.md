@@ -1,4 +1,4 @@
-*_[EN](https://github.com/yonyong/spring-cache-plus/blob/master/README_EN.md) | 中文_*
+*_[EN](https://gitee.com/yonyong/spring-cache-plus/blob/master/README_EN.md) | 中文_*
 
 # spring-cache-plus - 更灵活的缓存组件
 
@@ -27,7 +27,7 @@
 <dependency>
   <groupId>top.yonyong</groupId>
   <artifactId>spring-cache-plus</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 **友情提示**：
@@ -119,17 +119,14 @@ public class DaoImpl implements Dao{
 
 ## 三、自定义配置
 
-### 1. 自定义redis 配置
+### 1. 自定义redisTemplate 配置
 
-支持自定义redis配置
+支持自定义redisTemplate配置
 
-#### 1.1 禁用默认redis配置
+#### 1.1 排除默认redisTemlate配置类
 
-配置文件添加配置
-
-```properties
-# application.properties redis配置开关
-system.cache.client.redis.enable=false
+```java
+@SpringBootApplication(exclude = RedisCacheConfig.class)
 ```
 
 #### 1.2 自定义redis配置
@@ -149,49 +146,55 @@ public class RedisConfig {
 }
 ```
 
-#### 1.3 实现YangCacheTemplate
+### 2. 自行实现redis 操作API
+
+#### 2.1 排除RedisCacheTemplate
+
+```java
+@SpringBootApplication(exclude = RedisCacheConfig.class)
+```
+
+#### 2.2 实现YangCacheTemplate
 
 ```java
 @Component
-@AllArgsConstructor、
+@AllArgsConstructor
+@ConditionalOnProperty(prefix = "system.cache.client.redis", name = "enable", havingValue = "true", matchIfMissing = true)
 public class RedisCacheTemplate implements YangCacheTemplate {
 
-    //参考代码，逻辑自行实现
-    private final RedisTemplate<String,Object> yangRedisTemplate;
+    private final RedisTemplate client;
 
     @Override
     public boolean exist(String key) {
-        //参考代码，逻辑自行实现
-        return yangRedisTemplate.hasKey(key);
+        
+        // client.exist ......
     }
 
     @Override
     public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
-        //参考代码，逻辑自行实现
-        yangRedisTemplate.opsForValue().set(key, value, time, timeUnit);
-        return false;
+        // 设置缓存 set k,v
+        // client.set ......
     }
 
     @Override
     public boolean del(String key) {
-        //参考代码，逻辑自行实现
-        yangRedisTemplate.delete(key);
-        return false;
+        // 删除缓存 del k
+        // client.del ......
     }
 
     @Override
     public Object get(String key) {
-        //参考代码，逻辑自行实现
-        return yangRedisTemplate.opsForValue().get(key);
+        // 查询缓存 get k
+        // client.del ......
     }
 }
 ```
 
 
 
-### 2. 替换redis为其他缓存框架
+### 3. 替换redis为其他缓存框架
 
-#### 1.1 禁用redis
+#### 3.1 禁用redis
 
 配置文件添加配置
 
@@ -200,7 +203,7 @@ public class RedisCacheTemplate implements YangCacheTemplate {
 system.cache.client.redis.enable=false
 ```
 
-#### 1.2 实现 YangCacheTemplate
+#### 3.2 实现 YangCacheTemplate
 
 ```java
 @Component

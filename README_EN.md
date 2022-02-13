@@ -1,4 +1,4 @@
-EN| [中文](https://github.com/yonyong/spring-cache-plus/blob/master/README.md)
+EN| [中文](https://gitee.com/yonyong/spring-cache-plus/blob/master/README.md)
 
 # spring-cache-plus - More flexible caching components
 
@@ -27,7 +27,7 @@ EN| [中文](https://github.com/yonyong/spring-cache-plus/blob/master/README.md)
 <dependency>
   <groupId>top.yonyong</groupId>
   <artifactId>spring-cache-plus</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 **Friendly tips**：
@@ -119,17 +119,14 @@ public class DaoImpl implements Dao{
 
 ## 三、Custom configuration
 
-### 1. Customizing redis configuration
+### 1. Customizing redisTemplate configuration
 
-Support for custom redis configuration
+Support for custom redisTemplate configuration
 
-#### 1.1 Disable the default redis configuration
+#### 1.1 Disable the default redisTemplate configuration class
 
-Configuration file to add configuration
-
-```properties
-# application.properties redis configuration switches
-system.cache.client.redis.enable=false
+```java
+@SpringBootApplication(exclude = RedisCacheConfig.class)
 ```
 
 #### 1.2 Custom redis configuration
@@ -149,7 +146,15 @@ public class RedisConfig {
 }
 ```
 
-#### 1.3 实现YangCacheTemplate
+### 2. Implement the redis operation API yourself
+
+#### 2.1 Excluding RedisCacheTemplate
+
+```java
+@SpringBootApplication(exclude = RedisCacheConfig.class)
+```
+
+#### 2.2 Implement YangCacheTemplate
 
 ```java
 @Component
@@ -189,9 +194,9 @@ public class RedisCacheTemplate implements YangCacheTemplate {
 
 
 
-### 2. Replacing redis with other caching frameworks
+### 3. Replacing redis with other caching frameworks
 
-#### 1.1 Disabling redis
+#### 3.1 Disabling redis
 
 Configuration file to add configuration
 
@@ -200,7 +205,7 @@ Configuration file to add configuration
 system.cache.client.redis.enable=false
 ```
 
-#### 1.2 Implementation of YangCacheTemplate
+#### 3.2 Implementation of YangCacheTemplate
 
 ```java
 @Component

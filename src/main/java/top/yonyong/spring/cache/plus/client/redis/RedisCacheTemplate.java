@@ -26,21 +26,18 @@ public class RedisCacheTemplate implements YangCacheTemplate {
 
     @Override
     public boolean set(String key, Object value, long time, TimeUnit timeUnit) {
-        System.out.println(String.format("【添加缓存】key：%s,value:%s,time:%s,timeUnit:%s", key, value, time, timeUnit));
         yangRedisTemplate.opsForValue().set(key, value, time, timeUnit);
         return false;
     }
 
     @Override
     public boolean del(String key) {
-        System.out.println(String.format("【删除缓存】key：%s", key));
         yangRedisTemplate.delete(key);
         return false;
     }
 
     @Override
     public Object get(String key) {
-        System.out.println(String.format("【查询缓存】key：%s", key));
         return yangRedisTemplate.opsForValue().get(key);
     }
 }
